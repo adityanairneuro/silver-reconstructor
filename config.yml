@@ -1,4 +1,0 @@
-name: AdCount, a user friendly and automated tool to analyze subcellular structures
-markdown: kramdown
-gems:
-  - jekyll-seo-tag
