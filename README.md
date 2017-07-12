@@ -28,7 +28,7 @@ Further details about SilberReconstructor can be obtained from the SilberReconst
 
  
 
-<sup id="fn1">1. Wolfram Research Inc,<a href="#ref1" title="Jump back to footnote 1 in the text.">↩</a></sup> 
+<sup id="fn1">1. [Gilad Silberberg Laboratory, Department of Neuroscience, Karolinska Institute](http://www.neuro.ki.se/silberberg/)<a href="#ref1" title="Jump back to footnote 1 in the text.">↩</a></sup> 
 
-<sup id="fn2">2.[Gilad Silberberg Laboratory, Department of Neuroscience, Karolinska Institute](http://www.neuro.ki.se/silberberg/) <a href="#ref2" title="Jump back to footnote 2 in the text.">↩</a></sup>
+<sup id="fn2">2.Wolfram Research Inc, <a href="#ref2" title="Jump back to footnote 2 in the text.">↩</a></sup>
 
