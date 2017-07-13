@@ -1,0 +1,2006 @@
+(* Content-type: application/vnd.wolfram.player *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       153,          7]
+NotebookDataLength[     96836,       1997]
+NotebookOptionsPosition[     95872,       1960]
+NotebookOutlinePosition[     96596,       1986]
+CellTagsIndexPosition[     96553,       1983]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[{
+ StyleBox["SilberReconstructor\n",
+  FontColor->RGBColor[0.5686274509803921, 0., 0.2823529411764706]],
+ StyleBox["Automated quantification of neurons and dendrites  \nAditya Nair\n\
+", "Subchapter"],
+ StyleBox["Using algorithms and features from Vaa3D, NeuTube and AdCount (as \
+cited below)\n", "Subsubtitle"],
+ StyleBox["Peng, H., Bria, A., Zhou, Z., Iannello, G., & Long, F. (2014). \
+Extensible visualization and analysis for multidimensional images using \
+Vaa3D. Nature protocols, 9(1), 193-208.\nFeng, L., Zhao, T., & Kim, J. \
+(2015). neuTube 1.0: a new design for efficient neuron reconstruction \
+software based on the SWC format. eneuro, 2(1), ENEURO-0049.", "Item",
+  FontColor->RGBColor[0.5686274509803921, 0., 0.2823529411764706]]
+}], "Title",
+ Editable->False,
+ Selectable->False,
+ Deletable->False,
+ Copyable->False,
+ AllowInlineCells->False],
+
+Cell[TextData[StyleBox["To begin the program, Select Initialize under the \
+Menu option in the panel below", "Subsubsection",
+ FontColor->RGBColor[0.5686274509803921, 0., 0.2823529411764706]]], "Title",
+ ShowSelection->False,
+ Copyable->False,
+ AllowInlineCells->False,
+ FontColor->RGBColor[0.5686274509803921, 0., 0.2823529411764706]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Panel", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Grid", "[", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"Row", "[", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"ActionMenu", "[", 
+            RowBox[{"\"\<Menu\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\"\<Initialize\>\"", ":>", 
+                RowBox[{"(", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                  "FrontEndTokenExecute", "[", 
+                   "\"\<EvaluateInitialization\>\"", "]"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"$initialize", " ", "=", " ", "True"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"$displayFunction", " ", "=", " ", "False"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"$bin", " ", "=", " ", "False"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"$size", " ", "=", " ", "False"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"$HistoryLength", "=", "0"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"SetDirectory", "@", 
+                   RowBox[{"NotebookDirectory", "[", "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"AutoCollapse", "[", "]"}], ":=", 
+                   RowBox[{"(", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"$FrontEnd", "=!=", "$Failed"}], ",", 
+                    RowBox[{
+                    RowBox[{"SelectionMove", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "All", ",",
+                     "GeneratedCell"}], "]"}], ";", 
+                    RowBox[{
+                    "FrontEndTokenExecute", "[", 
+                    "\"\<SelectionCloseUnselectedCells\>\"", "]"}], ";", 
+                    RowBox[{"SelectionMove", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "After", 
+                    ",", "Cell"}], "]"}], ";"}]}], "]"}], ")"}]}], ";"}], 
+                 "\[IndentingNewLine]", ")"}]}], "\[IndentingNewLine]", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{
+               "\"\<Select the images you wish to analyze\>\"", 
+                "\[RuleDelayed]", 
+                RowBox[{"(", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"fileNames", "=", 
+                   RowBox[{
+                    RowBox[{"SystemDialogInput", "[", 
+                    RowBox[{"\"\<FileOpen\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"\"\<Image\>\"", "\[Rule]", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    "\"\<*.tif\>\"", ",", "\"\<*.png\>\"", ",", 
+                    "\"\<*.bmp\>\""}], "}"}]}], ",", 
+                    RowBox[{"\"\<all files\>\"", "\[Rule]", 
+                    RowBox[{"{", "\"\<*.*\>\"", "}"}]}]}], "}"}]}], "}"}], 
+                    ",", 
+                    RowBox[{
+                    "WindowTitle", "\[Rule]", 
+                    "\"\<Open Image file...\>\""}]}], "]"}], "//", 
+                    "Quiet"}]}], ";", 
+                  RowBox[{"fileData", "=", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"file", "=!=", "$Canceled"}], ",", 
+                    RowBox[{"load", "[", "file", "]"}], ",", 
+                    "\"\<Nothing\>\""}], "]"}]}], ";"}], 
+                 "\[IndentingNewLine]", ")"}]}]}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Method", "->", "\"\<Queued\>\""}]}], "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"ActionMenu", "[", 
+            RowBox[{"\"\<Pre-processing\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{
+               "\"\<Intensity based filtering\>\"", "\[RuleDelayed]", " ", 
+                RowBox[{"(", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Monitor", "[", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "fileNames", "]"}], "\[Equal]", 
+                    " ", "0"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"$bin", "=", "True"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$bin", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"images", " ", "=", 
+                    RowBox[{
+                    RowBox[{"Import", "[", "fileNames", "]"}], "//", 
+                    "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"$HistoryLength", " ", "=", " ", "0"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"test3", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{"Image3D", "[", "images", "]"}], "//", 
+                    "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"test4", " ", "=", " ", 
+                    RowBox[{"test3", "//", "Binarize"}]}], ";"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ValueQ", "[", "fileNames", "]"}], "\[Equal]", 
+                    " ", "True"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"SelectionMove", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Next", 
+                    ",", "CellGroup"}], "]"}], " ", ";", 
+                    RowBox[{"FrontEndTokenExecute", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                    "\"\<Evaluate\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"SelectionMove", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Previous",
+                     ",", "CellGroup"}], "]"}], " ", ";", 
+                    RowBox[{"FrontEndTokenExecute", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                    "\"\<Evaluate\>\""}], "]"}]}], ",", 
+                    RowBox[{"$displayFunction", " ", "=", " ", "True"}]}], 
+                    "}"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    "MessageDialog", "[", 
+                    "\"\<Please enter an image using the Menu --> Select your \
+image option\>\"", "]"}]}], "]"}], "//", "Quiet"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"AutoCollapse", "[", "]"}]}], 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"$bin", "=", "True"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$bin", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"images", " ", "=", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Import", ",", "fileNames"}], "]"}], "//", 
+                    "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"$HistoryLength", " ", "=", " ", "0"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"test3", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{"Image3D", "[", "images", "]"}], "//", 
+                    "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"test4", " ", "=", " ", 
+                    RowBox[{"test3", "//", "Binarize"}]}], ";"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ValueQ", "[", "fileNames", "]"}], "\[Equal]", 
+                    " ", "True"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"SelectionMove", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Next", 
+                    ",", "CellGroup"}], "]"}], " ", ";", 
+                    RowBox[{"FrontEndTokenExecute", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                    "\"\<Evaluate\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"SelectionMove", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Previous",
+                     ",", "CellGroup"}], "]"}], " ", ";", 
+                    RowBox[{"FrontEndTokenExecute", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                    "\"\<Evaluate\>\""}], "]"}]}], ",", 
+                    RowBox[{"$displayFunction", " ", "=", " ", "True"}]}], 
+                    "}"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    "MessageDialog", "[", 
+                    "\"\<Please enter an image using the Menu --> Select your \
+image option\>\"", "]"}]}], "]"}], "//", "Quiet"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"AutoCollapse", "[", "]"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+                    " ", 
+                    RowBox[{"ProgressIndicator", "[", 
+                    RowBox[{
+                    "Appearance", "\[Rule]", "\"\<Indeterminate\>\""}], 
+                    "]"}]}], "]"}], "//", "Quiet"}], "\[IndentingNewLine]", 
+                 "\[IndentingNewLine]", ")"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+               "\"\<Size based filtering\>\"", " ", "\[RuleDelayed]", " ", 
+                RowBox[{"(", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                  "Monitor", "[", "\[IndentingNewLine]", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"$bin", "=", "False"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"$size", "=", "True"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$bin", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$size", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"$HistoryLength", " ", "=", " ", "0"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"slice", " ", "=", 
+                    RowBox[{"Image3D", "[", 
+                    RowBox[{"Import", "[", "\"\<temp.tif\>\"", "]"}], "]"}]}],
+                     ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{
+                    RowBox[{"test5", " ", "=", 
+                    RowBox[{"DeleteSmallComponents", "[", "slice", "]"}]}], 
+                    ",", " ", 
+                    RowBox[{"DynamicEvaluationTimeout", "\[Rule]", "30"}]}], 
+                    "]"}], "//", "Quiet"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"u", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    "InputString", "[", 
+                    "\"\<Enter the name for your reconstructed file\>\"", 
+                    "]"}], "//", "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    RowBox[{"TextString", "[", "u", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", "test5"}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{"\"\<reconstructedneuron.tif\>\"", ",", "test5"}],
+                     "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ValueQ", "[", "$size", "]"}], "\[Equal]", " ", 
+                    "True"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"SelectionMove", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Next", 
+                    ",", "CellGroup"}], "]"}], " ", ";", 
+                    RowBox[{"FrontEndTokenExecute", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                    "\"\<Evaluate\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"SelectionMove", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Previous",
+                     ",", "CellGroup"}], "]"}], " ", ";", 
+                    RowBox[{"FrontEndTokenExecute", "[", 
+                    RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                    "\"\<Evaluate\>\""}], "]"}]}], ",", 
+                    RowBox[{"$displayFunction", " ", "=", " ", "True"}]}], 
+                    "}"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    "MessageDialog", "[", 
+                    "\"\<Please enter an image using the Menu --> Select your \
+image option\>\"", "]"}]}], "]"}], "//", "Quiet"}], ";"}], 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+                    RowBox[{"ProgressIndicator", "[", 
+                    RowBox[{
+                    "Appearance", "\[Rule]", "\"\<Indeterminate\>\""}], 
+                    "]"}]}], "]"}], "//", "Quiet"}], "\[IndentingNewLine]", 
+                 ")"}]}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              "}"}], ",", " ", 
+             RowBox[{"Method", "\[Rule]", "\"\<Queued\>\""}], ",", " ", 
+             RowBox[{"Appearance", "\[Rule]", "\"\<PopupMenu\>\""}]}], "]"}], 
+           ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"ActionMenu", "[", 
+            RowBox[{
+            "\"\<Reconstruction Algorithms\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+               "\"\<Reconstruction based on APP1\>\"", " ", "\[RuleDelayed]", 
+                " ", 
+                RowBox[{"(", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Monitor", "[", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$bin", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$size", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"$HistoryLength", " ", "=", " ", "0"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"$bin", " ", "\[Equal]", " ", "True"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"test6", " ", "=", 
+                    RowBox[{"Image3D", "[", 
+                    RowBox[{"Import", "[", "\"\<temp.tif\>\"", "]"}], "]"}]}],
+                     ";", "\[IndentingNewLine]", 
+                    RowBox[{"cmd", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"NotebookDirectory", "[", "]"}], "//", 
+                    "InputForm"}], "//", "ToString"}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "&"}]}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "&"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"v", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    "InputString", "[", 
+                    "\"\<Enter the name for your reconstructed file\>\"", 
+                    "]"}], "//", "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    RowBox[{"TextString", "[", "v", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", "test6"}], "]"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd", ",", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    RowBox[{"TextString", "[", "v", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", 
+                    "\"\<\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\\ \
+\\\"\\\"app1\>\""}], "]"}], "]"}]}], "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"$lipo", "=", "True"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"SetDirectory", "@", 
+                    RowBox[{"NotebookDirectory", "[", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Export", "[", 
+                    RowBox[{"\"\<reconstructedneuron.tif\>\"", ",", "test5"}],
+                     "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"cmd", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"NotebookDirectory", "[", "]"}], "//", 
+                    "InputForm"}], "//", "ToString"}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "&"}]}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "&"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd", ",", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    RowBox[{"TextString", "[", "u", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", 
+                    "\"\<\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\\ \
+\\\"\\\"app1\>\""}], "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+                    RowBox[{"ProgressIndicator", "[", 
+                    RowBox[{
+                    "Appearance", "\[Rule]", "\"\<Indeterminate\>\""}], 
+                    "]"}]}], "]"}], "//", "Quiet"}], "\[IndentingNewLine]", 
+                 ")"}]}], ",", 
+               RowBox[{
+               "\"\<Reconstruction based on APP2\>\"", " ", "\[RuleDelayed]", 
+                " ", 
+                RowBox[{"(", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                  "Monitor", "[", "\[IndentingNewLine]", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$bin", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$size", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"$HistoryLength", " ", "=", " ", "0"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"$bin", " ", "\[Equal]", " ", "True"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"test6", " ", "=", 
+                    RowBox[{"Image3D", "[", 
+                    RowBox[{"Import", "[", "\"\<temp.tif\>\"", "]"}], "]"}]}],
+                     ";", "\[IndentingNewLine]", 
+                    RowBox[{"cmd", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"NotebookDirectory", "[", "]"}], "//", 
+                    "InputForm"}], "//", "ToString"}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "&"}]}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "&"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"v", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    "InputString", "[", 
+                    "\"\<Enter the name for your reconstructed file\>\"", 
+                    "]"}], "//", "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    RowBox[{"TextString", "[", "v", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", "test6"}], "]"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd", ",", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    RowBox[{"TextString", "[", "v", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", 
+                    "\"\<\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\\ \
+\\\"\\\"app2\>\""}], "]"}], "]"}]}], "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"$lipo", "=", "True"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"SetDirectory", "@", 
+                    RowBox[{"NotebookDirectory", "[", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Export", "[", 
+                    RowBox[{"\"\<reconstructedneuron.tif\>\"", ",", "test5"}],
+                     "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"cmd", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"NotebookDirectory", "[", "]"}], "//", 
+                    "InputForm"}], "//", "ToString"}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "&"}]}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "&"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd", ",", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    RowBox[{"TextString", "[", "u", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", 
+                    "\"\<\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\\ \
+\\\"\\\"app2\>\""}], "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+                    RowBox[{"ProgressIndicator", "[", 
+                    RowBox[{
+                    "Appearance", "\[Rule]", "\"\<Indeterminate\>\""}], 
+                    "]"}]}], "]"}], "//", "Quiet"}], "\[IndentingNewLine]", 
+                 ")"}]}], ",", 
+               RowBox[{
+               "\"\<Semi-Automated Reconstruction\>\"", "\[RuleDelayed]", 
+                RowBox[{"(", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Monitor", "[", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"$lipo", "=", "True"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"SetDirectory", "@", "NotebookDirectory"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{"\"\<reconstructedneuron.tif\>\"", ",", "test5"}],
+                     "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"cmd", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"NotebookDirectory", "[", "]"}], "//", 
+                    "InputForm"}], "//", "ToString"}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "&"}]}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "&"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd", ",", 
+                    "\"\<reconstructedneuron.tif\\\"\\ \\\"/v\>\""}], "]"}], 
+                    "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    ",", 
+                    RowBox[{"ProgressIndicator", "[", 
+                    RowBox[{
+                    "Appearance", "\[Rule]", "\"\<Indeterminate\>\""}], 
+                    "]"}]}], "]"}], "//", "Quiet"}], "\[IndentingNewLine]", 
+                 ")"}]}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              "}"}], ",", " ", 
+             RowBox[{"Method", "\[Rule]", "\"\<Queued\>\""}], ",", " ", 
+             RowBox[{"Appearance", "\[Rule]", "\"\<PopupMenu\>\""}]}], "]"}], 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"ActionMenu", "[", 
+            RowBox[{"\"\<Post-Processing\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{
+              "\"\<Edit the SWC files using NeuTube\>\"", "\[RuleDelayed]", 
+               RowBox[{"(", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Monitor", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"SetDirectory", "@", 
+                    RowBox[{"NotebookDirectory", "[", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    "Run", "[", "\"\<\\\"\\\"neuTube.lnk\\\"\>\"", "]"}], 
+                    ";"}], "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{"If", " ", 
+                    RowBox[{"there", "'"}], "s", " ", "only", " ", "a", " ", 
+                    "single", " ", "Image"}], "*)"}], "\[IndentingNewLine]", 
+                   "\[IndentingNewLine]", ",", 
+                   RowBox[{"ProgressIndicator", "[", 
+                    RowBox[{
+                    "Appearance", "\[Rule]", "\"\<Indeterminate\>\""}], 
+                    "]"}]}], "]"}], "//", "Quiet"}], ")"}]}], 
+              "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              "\[IndentingNewLine]", "}"}], ",", " ", 
+             RowBox[{"Appearance", "\[Rule]", "\"\<PopupMenu\>\""}], ",", " ", 
+             RowBox[{"Method", "\[Rule]", "\"\<Queued\>\""}]}], 
+            "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Button", "[", 
+            RowBox[{"\"\<Restart Kernel\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Quit", "[", "]"}], ";"}]}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"ActionMenu", "[", 
+            RowBox[{"\"\<SWC Editing\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{"\"\<Flip SWC Files\>\"", "\[RuleDelayed]", 
+               RowBox[{"(", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"fileNameswc", "=", 
+                  RowBox[{
+                   RowBox[{"SystemDialogInput", "[", 
+                    RowBox[{"\"\<FileOpen\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<all files\>\"", "\[Rule]", 
+                    RowBox[{"{", "\"\<*.*\>\"", "}"}]}], "}"}]}], "}"}], ",", 
+                    RowBox[{
+                    "WindowTitle", "\[Rule]", 
+                    "\"\<Open Image file...\>\""}]}], "]"}], "//", 
+                   "Quiet"}]}], ";", 
+                 RowBox[{"fileData", "=", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"file", "=!=", "$Canceled"}], ",", 
+                    RowBox[{"load", "[", "file", "]"}], ",", 
+                    "\"\<Nothing\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "fileNameswc", "]"}], "\[Equal]", 
+                    " ", "0"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"x", " ", "=", 
+                    RowBox[{"Import", "[", 
+                    RowBox[{"fileNameswc", ",", "\"\<Table\>\""}], "]"}]}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"n", "=", " ", "1"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"u", "=", "1"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"y", " ", "=", "50"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"IntegerQ", "[", 
+                    RowBox[{"x", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"n", ",", "1"}], "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"y", " ", "=", "n"}], ",", 
+                    RowBox[{"n", "=", 
+                    RowBox[{"n", "+", "1"}]}]}], "]"}], ",", "y"}], "]"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"m", "=", "y"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"u", "=", "m"}], ";", 
+                    RowBox[{"x", " ", "=", " ", 
+                    RowBox[{"ReplacePart", "[", 
+                    RowBox[{"x", ",", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"u", ",", "4"}], "}"}], "\[Rule]", " ", 
+                    RowBox[{"256", "+", 
+                    RowBox[{"(", 
+                    RowBox[{"256", "-", 
+                    RowBox[{"x", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"m", ",", "4"}], "]"}], "]"}]}], ")"}]}]}]}], 
+                    "]"}]}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"m", ",", "y", ",", 
+                    RowBox[{"Length", "[", "x", "]"}]}], "}"}]}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"SetDirectory", "@", 
+                    RowBox[{"NotebookDirectory", "[", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{
+                    "\"\<Flipped1.swc\>\"", ",", "x", ",", "\"\<Text\>\""}], 
+                    "]"}], ";"}], "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"If", " ", "not", " ", "0"}], ",", " ", 
+                    RowBox[{"multiple", " ", "SWC", " ", "Files"}]}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"x", "=", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Import", "[", 
+                    RowBox[{"#", ",", "\"\<Table\>\""}], "]"}], "&"}], "/@", 
+                    "fileNameswc"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"w", "=", "1"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"n", "=", " ", "1"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"u", "=", "1"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"y", " ", "=", "50"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"IntegerQ", "[", 
+                    RowBox[{"x", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"w", ",", "n", ",", "1"}], "]"}], "]"}], "]"}], 
+                    ",", 
+                    RowBox[{"y", " ", "=", "n"}], ",", 
+                    RowBox[{"n", "=", 
+                    RowBox[{"n", "+", "1"}]}]}], "]"}], ",", "y"}], "]"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"m", "=", "y"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"u", "=", "m"}], ";", 
+                    RowBox[{"x", " ", "=", " ", 
+                    RowBox[{"ReplacePart", "[", 
+                    RowBox[{"x", ",", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"w", ",", "u", ",", "4"}], "}"}], "\[Rule]", " ", 
+                    RowBox[{"256", "+", 
+                    RowBox[{"(", 
+                    RowBox[{"256", "-", 
+                    RowBox[{"x", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"w", ",", "m", ",", "4"}], "]"}], "]"}]}], 
+                    ")"}]}]}]}], "]"}]}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"m", ",", "y", ",", 
+                    RowBox[{"Length", "[", 
+                    RowBox[{"x", "[", 
+                    RowBox[{"[", "w", "]"}], "]"}], "]"}]}], "}"}]}], "]"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"SetDirectory", "@", 
+                    RowBox[{"NotebookDirectory", "[", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{"\"\<Flipped\>\"", ",", 
+                    RowBox[{"ToString", "[", "w", "]"}], ",", 
+                    "\"\<.swc\>\""}], "]"}], ",", 
+                    RowBox[{"x", "[", 
+                    RowBox[{"[", "w", "]"}], "]"}], ",", "\"\<Text\>\""}], 
+                    "]"}]}], "\[IndentingNewLine]", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"w", ",", "1", ",", 
+                    RowBox[{"Length", "[", "fileNameswc", "]"}]}], "}"}]}], 
+                    "]"}], ";"}]}], "\[IndentingNewLine]", 
+                   "\[IndentingNewLine]", "]"}], "//", "Quiet"}], ";"}], 
+                "\[IndentingNewLine]", ")"}]}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Method", "->", "\"\<Queued\>\""}]}], "]"}], 
+           "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{"ActionMenu", "[", 
+            RowBox[{"\"\<Batch Processing\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{"\"\<Reconstruct 10 neurons \>\"", "\[RuleDelayed]", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Monitor", "[", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "fileNames", "]"}], "\[Equal]", 
+                    " ", "0"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"$bin", "=", "True"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$bin", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"images", " ", "=", 
+                    RowBox[{
+                    RowBox[{"Import", "[", "fileNames", "]"}], "//", 
+                    "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"b", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    "InputString", "[", 
+                    "\"\<Enter 10 values of binarization\>\"", "]"}], "//", 
+                    "TableForm"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"bs", " ", "=", 
+                    RowBox[{"StringSplit", "[", 
+                    RowBox[{
+                    RowBox[{"b", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", "\"\<,\>\""}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"dir", " ", "=", 
+                    RowBox[{
+                    "SystemDialogInput", "[", "\"\<Directory\>\"", "]"}]}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"SetDirectory", "@", "dir"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"test3", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{"Image3D", "[", "images", "]"}], "//", 
+                    "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"test4", " ", "=", " ", 
+                    RowBox[{"Binarize", "[", 
+                    RowBox[{"test3", ",", "i"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{"\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", "i", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", "test4"}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "4", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "5", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "6", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "7", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "8", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "9", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "10", "]"}], "]"}]}], "}"}]}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"cmd1", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"dir", "//", "InputForm"}], "//", "ToString"}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "&"}]}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "&"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "4", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "5", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "6", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "7", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "8", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "9", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "10", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"$HistoryLength", " ", "=", " ", "0"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"AutoCollapse", "[", "]"}]}], 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"$bin", "=", "True"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "$bin", "]"}], "//", "Quiet"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"images", " ", "=", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Import", ",", "fileNames"}], "]"}], "//", 
+                    "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"$HistoryLength", " ", "=", " ", "0"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"b", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    "InputString", "[", 
+                    "\"\<Enter 10 values of binarization\>\"", "]"}], "//", 
+                    "TableForm"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"bs", " ", "=", 
+                    RowBox[{"StringSplit", "[", 
+                    RowBox[{
+                    RowBox[{"b", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", "\"\<,\>\""}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"dir", " ", "=", 
+                    RowBox[{
+                    "SystemDialogInput", "[", "\"\<Directory\>\"", "]"}]}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"SetDirectory", "@", "dir"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"test3", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{"Image3D", "[", "images", "]"}], "//", 
+                    "Quiet"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"test4", " ", "=", " ", 
+                    RowBox[{"test3", "//", "Binarize"}]}], ";"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"test4", " ", "=", " ", 
+                    RowBox[{"Binarize", "[", 
+                    RowBox[{"test3", ",", "i"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{"\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", "i", "]"}], ",", 
+                    "\"\<.tif\>\""}], "]"}], ",", "test4"}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "4", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "5", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "6", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "7", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "8", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "9", "]"}], "]"}], ",", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "10", "]"}], "]"}]}], "}"}]}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"cmd1", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"dir", "//", "InputForm"}], "//", "ToString"}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "&"}]}], "//", 
+                    RowBox[{
+                    RowBox[{"StringDrop", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "&"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "4", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "5", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "6", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "7", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "8", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "9", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Run", "[", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<\\\"\\\"C:\\\\Program \
+Files\\\\Vaa3D-3.20\\\\bin\\\\vaa3d.exe\\\" \\\"/i\\\"\\ \\\"\>\"", ",", 
+                    "cmd1", ",", "\"\<BatchProcess\>\"", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bs", "[", 
+                    RowBox[{"[", "10", "]"}], "]"}], "]"}], ",", 
+                    "\"\<.tif\\\"\\ \\\"/x\\\"\\ \\\"vn2.dll\\\"\\ \\\"/f\\\"\
+\\ \\\"\\\"app2\>\""}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"AutoCollapse", "[", "]"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+                    " ", 
+                    RowBox[{"ProgressIndicator", "[", 
+                    RowBox[{
+                    "Appearance", "\[Rule]", "\"\<Indeterminate\>\""}], 
+                    "]"}]}], "]"}], "\[IndentingNewLine]", 
+                  "\[IndentingNewLine]", "//", "Quiet"}], ";"}], 
+                "\[IndentingNewLine]", ")"}]}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Method", "->", "\"\<Queued\>\""}]}], "]"}], 
+           "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{"Button", "[", 
+            RowBox[{
+            "\"\<Display Results\>\"", ",", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"ValueQ", "[", "fileNames", "]"}], "\[Equal]", " ", 
+                "True"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"SelectionMove", "[", 
+                   RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Next", 
+                    ",", "CellGroup"}], "]"}], " ", ";", 
+                  RowBox[{"FrontEndTokenExecute", "[", 
+                   RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                    "\"\<Evaluate\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"SelectionMove", "[", 
+                   RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Previous",
+                     ",", "CellGroup"}], "]"}], " ", ";", 
+                  RowBox[{"FrontEndTokenExecute", "[", 
+                   RowBox[{
+                    RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                    "\"\<Evaluate\>\""}], "]"}]}], ",", 
+                 RowBox[{"$displayFunction", " ", "=", " ", "True"}]}], "}"}],
+                ",", "\[IndentingNewLine]", 
+               RowBox[{
+               "MessageDialog", "[", 
+                "\"\<Please enter an image using the Menu --> Select your \
+image option\>\"", "]"}]}], "]"}]}], "]"}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Button", "[", 
+            RowBox[{"\"\<Refresh\>\"", ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"SelectionMove", "[", 
+                 RowBox[{
+                  RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Next", ",", 
+                  "CellGroup"}], "]"}], " ", ";", 
+                RowBox[{"FrontEndTokenExecute", "[", 
+                 RowBox[{
+                  RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                  "\"\<Evaluate\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"SelectionMove", "[", 
+                 RowBox[{
+                  RowBox[{"EvaluationNotebook", "[", "]"}], ",", "Previous", 
+                  ",", "CellGroup"}], "]"}], " ", ";", 
+                RowBox[{"FrontEndTokenExecute", "[", 
+                 RowBox[{
+                  RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+                  "\"\<Evaluate\>\""}], "]"}]}], ",", 
+               RowBox[{"$displayFunction", " ", "=", " ", "False"}], ",", 
+               RowBox[{"Clear", "[", 
+                RowBox[{"test", ",", " ", "testlip", ",", "fileNames"}], 
+                "]"}], ",", 
+               RowBox[{"$initialize", " ", "=", " ", "False"}]}], "}"}]}], 
+            "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{"Display", " ", "Time"}], "*)"}], "\[IndentingNewLine]", 
+          "}"}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], 
+        "\[IndentingNewLine]", "}"}], "}"}], "\[IndentingNewLine]", "]"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{"Background", "->", 
+      RowBox[{"Dynamic", "[", 
+       RowBox[{"Switch", "[", 
+        RowBox[{"$initialize", ",", "True", ",", 
+         RowBox[{"Lighter", "[", 
+          RowBox[{"Gray", ",", ".8"}], "]"}], ",", "_", ",", 
+         RowBox[{"RGBColor", "[", 
+          RowBox[{"0.568", ",", "0", ",", "0.282"}], "]"}]}], "]"}], 
+       "]"}]}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"AutoCollapse", "[", "]"}], ":=", 
+    RowBox[{"(", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"$FrontEnd", "=!=", "$Failed"}], ",", 
+       RowBox[{
+        RowBox[{"SelectionMove", "[", 
+         RowBox[{
+          RowBox[{"EvaluationNotebook", "[", "]"}], ",", "All", ",", 
+          "GeneratedCell"}], "]"}], ";", 
+        RowBox[{
+        "FrontEndTokenExecute", "[", "\"\<SelectionCloseUnselectedCells\>\"", 
+         "]"}], ";", 
+        RowBox[{"SelectionMove", "[", 
+         RowBox[{
+          RowBox[{"EvaluationNotebook", "[", "]"}], ",", "After", ",", 
+          "Cell"}], "]"}], ";"}]}], "]"}], ")"}]}], "\[IndentingNewLine]", 
+   RowBox[{"AutoCollapse", "[", "]"}]}]}]], "Input",
+ ShowCellBracket->False,
+ ShowSelection->False,
+ CellOpen->False],
+
+Cell[BoxData[
+ PanelBox[
+  TagBox[GridBox[{
+     {
+      TemplateBox[{
+       ActionMenuBox[
+        "\"Menu\"", {
+         "\"Initialize\"" :> (
+           FrontEndTokenExecute[
+            "EvaluateInitialization"]; $CellContext`$initialize = 
+            True; $CellContext`$displayFunction = False; $CellContext`$bin = 
+            False; $CellContext`$size = False; 
+           ClearSystemCache[]; $HistoryLength = 0; SetDirectory[
+             NotebookDirectory[]]; $CellContext`AutoCollapse[] := 
+            If[$FrontEnd =!= $Failed, SelectionMove[
+                EvaluationNotebook[], All, GeneratedCell]; 
+              FrontEndTokenExecute["SelectionCloseUnselectedCells"]; 
+              SelectionMove[
+                EvaluationNotebook[], After, Cell]; Null]; Null), 
+          "\"Select the images you wish to analyze\"" :> \
+($CellContext`fileNames = Quiet[
+              SystemDialogInput["FileOpen", {
+                NotebookDirectory[], {
+                "Image" -> {"*.tif", "*.png", "*.bmp"}, 
+                 "all files" -> {"*.*"}}}, WindowTitle -> 
+               "Open Image file..."]]; $CellContext`fileData = 
+            If[$CellContext`file =!= $Canceled, 
+              $CellContext`load[$CellContext`file], "Nothing"]; Null)}, 
+         Method -> "Queued"],ActionMenuBox[
+        "\"Pre-processing\"", {"\"Intensity based filtering\"" :> Quiet[
+            Monitor[
+             If[
+             Length[$CellContext`fileNames] == 0, $CellContext`$bin = True; 
+              Quiet[
+                Dynamic[$CellContext`$bin]]; $CellContext`images = Quiet[
+                 Import[$CellContext`fileNames]]; $HistoryLength = 0; 
+              ClearSystemCache[]; $CellContext`test3 = Quiet[
+                 Image3D[$CellContext`images]]; Quiet[
+                If[ValueQ[$CellContext`fileNames] == True, {SelectionMove[
+                    EvaluationNotebook[], Next, CellGroup]; 
+                  FrontEndTokenExecute[
+                    EvaluationNotebook[], "Evaluate"]; SelectionMove[
+                    EvaluationNotebook[], Previous, CellGroup]; 
+                  FrontEndTokenExecute[
+                    EvaluationNotebook[], 
+                    "Evaluate"], $CellContext`$displayFunction = True}, 
+                 MessageDialog[
+                 "Please enter an image using the Menu --> Select your image \
+option"]]]; $CellContext`AutoCollapse[], $CellContext`$bin = True; Quiet[
+                Dynamic[$CellContext`$bin]]; $CellContext`images = Quiet[
+                 Map[Import, $CellContext`fileNames]]; $HistoryLength = 0; 
+              ClearSystemCache[]; $CellContext`test3 = Quiet[
+                 Image3D[$CellContext`images]]; Quiet[
+                If[ValueQ[$CellContext`fileNames] == True, {SelectionMove[
+                    EvaluationNotebook[], Next, CellGroup]; 
+                  FrontEndTokenExecute[
+                    EvaluationNotebook[], "Evaluate"]; SelectionMove[
+                    EvaluationNotebook[], Previous, CellGroup]; 
+                  FrontEndTokenExecute[
+                    EvaluationNotebook[], 
+                    "Evaluate"], $CellContext`$displayFunction = True}, 
+                 MessageDialog[
+                 "Please enter an image using the Menu --> Select your image \
+option"]]]; $CellContext`AutoCollapse[]], 
+             ProgressIndicator[Appearance -> "Indeterminate"]]], 
+          "\"Size based filtering\"" :> Quiet[
+            
+            Monitor[$CellContext`$bin = False; $CellContext`$size = True; 
+             Quiet[
+               Dynamic[$CellContext`$bin]]; Quiet[
+               Dynamic[$CellContext`$size]]; $HistoryLength = 0; 
+             ClearSystemCache[]; $CellContext`slice = Image3D[
+                Import["temp.tif"]]; Quiet[
+               
+               Style[$CellContext`test5 = 
+                DeleteSmallComponents[$CellContext`slice], 
+                DynamicEvaluationTimeout -> 30]]; $CellContext`u = Quiet[
+                InputString["Enter the name for your reconstructed file"]]; 
+             Export[
+               StringJoin[
+                TextString[$CellContext`u], ".tif"], $CellContext`test5]; 
+             Export["reconstructedneuron.tif", $CellContext`test5]; Quiet[
+               If[ValueQ[$CellContext`$size] == True, {SelectionMove[
+                   EvaluationNotebook[], Next, CellGroup]; 
+                 FrontEndTokenExecute[
+                   EvaluationNotebook[], "Evaluate"]; SelectionMove[
+                   EvaluationNotebook[], Previous, CellGroup]; 
+                 FrontEndTokenExecute[
+                   EvaluationNotebook[], 
+                   "Evaluate"], $CellContext`$displayFunction = True}, 
+                MessageDialog[
+                "Please enter an image using the Menu --> Select your image \
+option"]]]; Null, 
+             ProgressIndicator[Appearance -> "Indeterminate"]]]}, Method -> 
+         "Queued", Appearance -> "PopupMenu"],ActionMenuBox[
+        "\"Reconstruction Algorithms\"", {
+         "\"Reconstruction based on APP1\"" :> Quiet[
+            Monitor[Quiet[
+               Dynamic[$CellContext`$bin]]; Quiet[
+               Dynamic[$CellContext`$size]]; $HistoryLength = 0; 
+             ClearSystemCache[]; 
+             If[$CellContext`$bin == True, $CellContext`test6 = Image3D[
+                  Import["temp.tif"]]; $CellContext`cmd = (
+                 StringDrop[#, -1]& )[
+                  (StringDrop[#, 1]& )[
+                   ToString[
+                    InputForm[
+                    NotebookDirectory[]]]]]; $CellContext`v = Quiet[
+                  InputString["Enter the name for your reconstructed file"]]; 
+               Export[
+                 StringJoin[
+                  TextString[$CellContext`v], ".tif"], $CellContext`test6]; 
+               Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd, 
+                  StringJoin[
+                   TextString[$CellContext`v], ".tif"], 
+                  "\" \"/x\" \"vn2.dll\" \"/f\" \"\"app1"]], \
+$CellContext`$lipo = True; SetDirectory[
+                 NotebookDirectory[]]; $CellContext`cmd = (
+                 StringDrop[#, -1]& )[
+                  (StringDrop[#, 1]& )[
+                   ToString[
+                    InputForm[
+                    NotebookDirectory[]]]]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd, 
+                  StringJoin[
+                   TextString[$CellContext`u], ".tif"], 
+                  "\" \"/x\" \"vn2.dll\" \"/f\" \"\"app1"]]], 
+             ProgressIndicator[Appearance -> "Indeterminate"]]], 
+          "\"Reconstruction based on APP2\"" :> Quiet[
+            Monitor[Quiet[
+               Dynamic[$CellContext`$bin]]; Quiet[
+               Dynamic[$CellContext`$size]]; $HistoryLength = 0; 
+             ClearSystemCache[]; 
+             If[$CellContext`$bin == True, $CellContext`test6 = Image3D[
+                  Import["temp.tif"]]; $CellContext`cmd = (
+                 StringDrop[#, -1]& )[
+                  (StringDrop[#, 1]& )[
+                   ToString[
+                    InputForm[
+                    NotebookDirectory[]]]]]; $CellContext`v = Quiet[
+                  InputString["Enter the name for your reconstructed file"]]; 
+               Export[
+                 StringJoin[
+                  TextString[$CellContext`v], ".tif"], $CellContext`test6]; 
+               Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd, 
+                  StringJoin[
+                   TextString[$CellContext`v], ".tif"], 
+                  "\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]], \
+$CellContext`$lipo = True; SetDirectory[
+                 NotebookDirectory[]]; $CellContext`cmd = (
+                 StringDrop[#, -1]& )[
+                  (StringDrop[#, 1]& )[
+                   ToString[
+                    InputForm[
+                    NotebookDirectory[]]]]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd, 
+                  StringJoin[
+                   TextString[$CellContext`u], ".tif"], 
+                  "\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]], 
+             ProgressIndicator[Appearance -> "Indeterminate"]]], 
+          "\"Semi-Automated Reconstruction\"" :> Quiet[
+            
+            Monitor[$CellContext`$lipo = True; 
+             SetDirectory[NotebookDirectory]; 
+             Export["reconstructedneuron.tif", $CellContext`test5]; \
+$CellContext`cmd = (StringDrop[#, -1]& )[
+                (StringDrop[#, 1]& )[
+                 ToString[
+                  InputForm[
+                   NotebookDirectory[]]]]]; Run[
+               StringJoin[
+               "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd, "reconstructedneuron.tif\" \"/v"]], 
+             ProgressIndicator[Appearance -> "Indeterminate"]]]}, Method -> 
+         "Queued", Appearance -> "PopupMenu"],ActionMenuBox[
+        "\"Post-Processing\"", {
+         "\"Edit the SWC files using NeuTube\"" :> Quiet[
+            Monitor[SetDirectory[
+               NotebookDirectory[]]; Run["\"\"neuTube.lnk\""]; Null, 
+             ProgressIndicator[Appearance -> "Indeterminate"]]]}, Appearance -> 
+         "PopupMenu", Method -> "Queued"],ButtonBox[
+        "\"Restart Kernel\"", ButtonFunction :> (Quit[]; Null), Appearance -> 
+         Automatic, Evaluator -> Automatic, Method -> "Preemptive"],
+        ActionMenuBox[
+        "\"SWC Editing\"", {
+         "\"Flip SWC Files\"" :> ($CellContext`fileNameswc = Quiet[
+              SystemDialogInput["FileOpen", {
+                NotebookDirectory[], {"all files" -> {"*.*"}}}, WindowTitle -> 
+               "Open Image file..."]]; $CellContext`fileData = 
+            If[$CellContext`file =!= $Canceled, 
+              $CellContext`load[$CellContext`file], "Nothing"]; Quiet[
+             If[
+             Length[$CellContext`fileNameswc] == 
+              0, $CellContext`x = 
+               Import[$CellContext`fileNameswc, "Table"]; $CellContext`n = 
+               1; $CellContext`u = 1; $CellContext`y = 50; Do[
+                If[
+                 IntegerQ[
+                  
+                  Part[$CellContext`x, $CellContext`n, 
+                   1]], $CellContext`y = $CellContext`n, $CellContext`n = \
+$CellContext`n + 1], $CellContext`y]; $CellContext`m = $CellContext`y; 
+              Do[$CellContext`u = $CellContext`m; $CellContext`x = 
+                 ReplacePart[$CellContext`x, {$CellContext`u, 4} -> 
+                   256 + (256 - 
+                    Part[$CellContext`x, $CellContext`m, 
+                    4])], {$CellContext`m, $CellContext`y, 
+                 Length[$CellContext`x]}]; SetDirectory[
+                NotebookDirectory[]]; 
+              Export["Flipped1.swc", $CellContext`x, "Text"]; 
+              Null, $CellContext`x = 
+               Map[Import[#, 
+                  "Table"]& , $CellContext`fileNameswc]; $CellContext`w = 1; 
+              Do[$CellContext`n = 1; $CellContext`u = 1; $CellContext`y = 50; 
+                Do[
+                  If[
+                   IntegerQ[
+                    
+                    Part[$CellContext`x, $CellContext`w, $CellContext`n, 
+                    1]], $CellContext`y = $CellContext`n, $CellContext`n = \
+$CellContext`n + 1], $CellContext`y]; $CellContext`m = $CellContext`y; 
+                Do[$CellContext`u = $CellContext`m; $CellContext`x = 
+                   ReplacePart[$CellContext`x, {$CellContext`w, \
+$CellContext`u, 4} -> 256 + (256 - 
+                    Part[$CellContext`x, $CellContext`w, $CellContext`m, 
+                    4])], {$CellContext`m, $CellContext`y, 
+                   Length[
+                    Part[$CellContext`x, $CellContext`w]]}]; SetDirectory[
+                  NotebookDirectory[]]; Export[
+                  StringJoin["Flipped", 
+                   ToString[$CellContext`w], ".swc"], 
+                  Part[$CellContext`x, $CellContext`w], 
+                  "Text"], {$CellContext`w, 1, 
+                 Length[$CellContext`fileNameswc]}]; Null]]; Null)}, Method -> 
+         "Queued"],ActionMenuBox[
+        "\"Batch Processing\"", {"\"Reconstruct 10 neurons \"" :> (Quiet[
+             Monitor[
+              If[
+              Length[$CellContext`fileNames] == 0, $CellContext`$bin = True; 
+               Quiet[
+                 Dynamic[$CellContext`$bin]]; $CellContext`images = Quiet[
+                  Import[$CellContext`fileNames]]; $CellContext`b = TableForm[
+                  InputString[
+                  "Enter 10 values of binarization"]]; $CellContext`bs = 
+                StringSplit[
+                  Part[$CellContext`b, 1], ","]; $CellContext`dir = 
+                SystemDialogInput["Directory"]; 
+               SetDirectory[$CellContext`dir]; 
+               ClearSystemCache[]; $CellContext`test3 = Quiet[
+                  Image3D[$CellContext`images]]; 
+               Do[$CellContext`test4 = 
+                  Binarize[$CellContext`test3, $CellContext`i]; Export[
+                   StringJoin["BatchProcess", 
+                    ToString[$CellContext`i], 
+                    ".tif"], $CellContext`test4], {$CellContext`i, {
+                   Part[$CellContext`bs, 1], 
+                   Part[$CellContext`bs, 2], 
+                   Part[$CellContext`bs, 3], 
+                   Part[$CellContext`bs, 4], 
+                   Part[$CellContext`bs, 5], 
+                   Part[$CellContext`bs, 6], 
+                   Part[$CellContext`bs, 7], 
+                   Part[$CellContext`bs, 8], 
+                   Part[$CellContext`bs, 9], 
+                   Part[$CellContext`bs, 10]}}]; $CellContext`cmd1 = (
+                 StringDrop[#, -1]& )[
+                  (StringDrop[#, 1]& )[
+                   ToString[
+                    InputForm[$CellContext`dir]]]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 1]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 2]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 3]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 4]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 5]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 6]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 7]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 8]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 9]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 10]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; \
+$HistoryLength = 0; $CellContext`AutoCollapse[], $CellContext`$bin = True; 
+               Quiet[
+                 Dynamic[$CellContext`$bin]]; $CellContext`images = Quiet[
+                  Map[Import, $CellContext`fileNames]]; $HistoryLength = 
+                0; $CellContext`b = TableForm[
+                  InputString[
+                  "Enter 10 values of binarization"]]; $CellContext`bs = 
+                StringSplit[
+                  Part[$CellContext`b, 1], ","]; $CellContext`dir = 
+                SystemDialogInput["Directory"]; 
+               SetDirectory[$CellContext`dir]; 
+               ClearSystemCache[]; $CellContext`test3 = Quiet[
+                  Image3D[$CellContext`images]]; 
+               Do[$CellContext`test4 = 
+                  Binarize[$CellContext`test3, $CellContext`i]; Export[
+                   StringJoin["BatchProcess", 
+                    ToString[$CellContext`i], 
+                    ".tif"], $CellContext`test4], {$CellContext`i, {
+                   Part[$CellContext`bs, 1], 
+                   Part[$CellContext`bs, 2], 
+                   Part[$CellContext`bs, 3], 
+                   Part[$CellContext`bs, 4], 
+                   Part[$CellContext`bs, 5], 
+                   Part[$CellContext`bs, 6], 
+                   Part[$CellContext`bs, 7], 
+                   Part[$CellContext`bs, 8], 
+                   Part[$CellContext`bs, 9], 
+                   Part[$CellContext`bs, 10]}}]; $CellContext`cmd1 = (
+                 StringDrop[#, -1]& )[
+                  (StringDrop[#, 1]& )[
+                   ToString[
+                    InputForm[$CellContext`dir]]]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 1]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 2]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 3]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 4]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 5]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 6]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 7]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 8]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 9]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; Run[
+                 StringJoin[
+                 "\"\"C:\\Program Files\\Vaa3D-3.20\\bin\\vaa3d.exe\" \"/i\" \
+\"", $CellContext`cmd1, "BatchProcess", 
+                  ToString[
+                   Part[$CellContext`bs, 10]], 
+                  ".tif\" \"/x\" \"vn2.dll\" \"/f\" \"\"app2"]]; \
+$CellContext`AutoCollapse[]], 
+              ProgressIndicator[Appearance -> "Indeterminate"]]]; Null)}, 
+         Method -> "Queued"],ButtonBox[
+        "\"Display Results\"", ButtonFunction :> 
+         If[ValueQ[$CellContext`fileNames] == True, {SelectionMove[
+              EvaluationNotebook[], Next, CellGroup]; FrontEndTokenExecute[
+              EvaluationNotebook[], "Evaluate"]; SelectionMove[
+              EvaluationNotebook[], Previous, CellGroup]; FrontEndTokenExecute[
+              EvaluationNotebook[], 
+              "Evaluate"], $CellContext`$displayFunction = True}, 
+           MessageDialog[
+           "Please enter an image using the Menu --> Select your image \
+option"]], Appearance -> Automatic, Evaluator -> Automatic, Method -> 
+         "Preemptive"],ButtonBox[
+        "\"Refresh\"", ButtonFunction :> {SelectionMove[
+             EvaluationNotebook[], Next, CellGroup]; FrontEndTokenExecute[
+             EvaluationNotebook[], "Evaluate"]; SelectionMove[
+             EvaluationNotebook[], Previous, CellGroup]; FrontEndTokenExecute[
+             EvaluationNotebook[], "Evaluate"], $CellContext`$displayFunction = 
+           False, 
+           
+           Clear[$CellContext`test, $CellContext`testlip, \
+$CellContext`fileNames], $CellContext`$initialize = False}, Appearance -> 
+         Automatic, Evaluator -> Automatic, Method -> "Preemptive"]},
+       "RowDefault"]}
+    },
+    AutoDelete->False,
+    GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+   "Grid"],
+  Background->Dynamic[
+    Switch[$CellContext`$initialize, True, 
+     Lighter[Gray, 0.8], 
+     Blank[], 
+     RGBColor[0.568, 0, 0.282]]]]], "Output",
+ ShowSelection->False]
+}, {2}]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SetDirectory", "@", 
+   RowBox[{"NotebookDirectory", "[", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"If", "[", 
+  RowBox[{
+   RowBox[{"$displayFunction", " ", "\[Equal]", " ", "True"}], ",", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"$bin", "\[Equal]", " ", "True"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"ClearSystemCache", "[", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Quiet", "[", 
+       RowBox[{
+       "Panel", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Manipulate", "[", 
+           RowBox[{
+            RowBox[{"Style", "[", 
+             RowBox[{
+              RowBox[{"Dynamic", "[", 
+               RowBox[{
+                RowBox[{"ControlActive", "[", 
+                 RowBox[{"\"\<Updating...\>\"", ",", 
+                  RowBox[{"test4", " ", "=", " ", 
+                   RowBox[{
+                    RowBox[{"Binarize", "[", 
+                    RowBox[{"test3", ",", "x"}], "]"}], "//", 
+                    RowBox[{
+                    RowBox[{"Image3D", "[", 
+                    RowBox[{"#", ",", " ", 
+                    RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}], 
+                    "&"}]}]}]}], "]"}], ",", 
+                RowBox[{"Export", "[", 
+                 RowBox[{"\"\<temp.tif\>\"", ",", "test4"}], "]"}]}], "]"}], 
+              ",", " ", 
+              RowBox[{"DynamicEvaluationTimeout", "\[Rule]", "30"}]}], "]"}], 
+            ",", 
+            RowBox[{"{", 
+             RowBox[{"x", ",", "0", ",", "1"}], "}"}]}], "]"}], "//", 
+          "Quiet"}], "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+         RowBox[{"Background", "->", 
+          RowBox[{"Dynamic", "[", 
+           RowBox[{"Switch", "[", 
+            RowBox[{"$initialize", ",", "True", ",", 
+             RowBox[{"RGBColor", "[", 
+              RowBox[{"0.568", ",", "0", ",", "0.282"}], "]"}], ",", "_", ",", 
+             RowBox[{"Lighter", "[", 
+              RowBox[{
+               RowBox[{"Blend", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"Blue", ",", "Red"}], "}"}], ",", "0.7"}], "]"}], 
+               ",", ".8"}], "]"}]}], "]"}], "]"}]}]}], " ", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], "]"}]}], 
+     "\[IndentingNewLine]", ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ClearSystemCache", "[", "]"}], "//", "Quiet"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Quiet", "[", 
+       RowBox[{"Panel", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Image3D", "[", 
+           RowBox[{"test5", ",", 
+            RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}], "//", 
+          "Quiet"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Export", "[", 
+           RowBox[{"\"\<reconstructedneuron.tif\>\"", ",", "test5"}], "]"}], 
+          ";"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"Background", "->", 
+          RowBox[{"Dynamic", "[", 
+           RowBox[{"Switch", "[", 
+            RowBox[{"$initialize", ",", "True", ",", 
+             RowBox[{"RGBColor", "[", 
+              RowBox[{"0.568", ",", "0", ",", "0.282"}], "]"}], ",", "_", ",", 
+             RowBox[{"Lighter", "[", 
+              RowBox[{
+               RowBox[{"Blend", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"Blue", ",", "Red"}], "}"}], ",", "0.7"}], "]"}], 
+               ",", ".8"}], "]"}]}], "]"}], "]"}]}]}], " ", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], 
+       "\[IndentingNewLine]", "]"}]}]}], "]"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", ",", 
+   RowBox[{"Panel", "[", 
+    RowBox[{
+    "\"\<Begin your analysis by initializing the program using (Menu --> \
+Initialize)\>\"", ",", 
+     RowBox[{"Alignment", "\[Rule]", "Center"}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"1024", ",", "512"}], "}"}]}]}], "]"}]}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"AutoCollapse", "[", "]"}], ";"}]}], "Input",
+ ShowCellBracket->False,
+ ShowSelection->False,
+ CellOpen->False],
+
+Cell[BoxData[
+ PanelBox["\<\"Begin your analysis by initializing the program using (Menu \
+--> Initialize)\"\>",
+  Alignment->Center,
+  ImageSize->{1024, 512}]], "Output",
+ ShowSelection->False]
+}, {2}]]
+}, Open  ]]
+},
+Saveable->False,
+WindowSize->{1366, 685},
+WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+Visible->True,
+ScrollingOptions->{"VerticalScrollRange"->Fit},
+ShowCellBracket->Automatic,
+CellContext->Notebook,
+TrackCellChangeTimes->False,
+FrontEndVersion->"10.3 for Microsoft Windows (64-bit) (December 10, 2015)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[StyleDefinitions -> "Default.nb"]]}, Visible -> False, 
+  FrontEndVersion -> 
+  "10.3 for Microsoft Windows (64-bit) (December 10, 2015)", StyleDefinitions -> 
+  "PrivateStylesheetFormatting.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[575, 22, 874, 18, 254, "Title"],
+Cell[1452, 42, 335, 6, 67, "Title"],
+Cell[CellGroupData[{
+Cell[1812, 52, 66222, 1321, 19, "Input",
+ CellOpen->False],
+Cell[68037, 1375, 23248, 465, 67, "Output"]
+}, {2}]],
+Cell[CellGroupData[{
+Cell[91319, 1845, 4331, 104, 19, "Input",
+ CellOpen->False],
+Cell[95653, 1951, 194, 5, 529, "Output"]
+}, {2}]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
